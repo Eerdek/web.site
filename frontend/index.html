@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нэвтрэх & Мессеж Илгээх</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #6a11cb, #2575fc);
+            color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            background: #6a11cb;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .login-box, .message-board, .message-link {
+            background: linear-gradient(to right, #6a11cb, #ff00ff);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-box h2, .message-board h2, .message-link h2 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .login-box button {
+            background: #00c853;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #messageList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 16px;
+        }
+
+        #messageList li {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .refresh-button, .copy-button, .social-button {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .refresh-button {
+            background: #000;
+        }
+
+        .copy-button {
+            background: #00c853;
+        }
+
+        .social-button {
+            background: linear-gradient(to right, #ff6f00, #d50000);
+        }
+
+        .copy-section input {
+            width: 80%;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            font-size: 14px;
+            outline: none;
+        }
+
+        @media (max-width: 480px) {
+            .login-box, .message-board, .message-link {
+                padding: 15px;
+            }
+
+            .header {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">✨ Нэвтрэх & ШУТИС-ийн NGL✨</div>
+    <div class="container">
+        <!-- Login Section -->
+        <div class="login-box" id="loginBox">
+            <h2>Нэвтрэх</h2>
+            <input type="text" id="username" placeholder="Хэрэглэгчийн нэр">
+            <input type="password" id="password" placeholder="Нууц үг">
+            <button onclick="login()">Нэвтрэх</button>
+        </div>
+
+        <!-- Message Board Section -->
+        <div class="message-board" id="messageBoard" style="display: none;">
+            <h2>Message Board</h2>
+            <ul id="messageList">
+                <li>No feedbacks from your friends yet!</li>
+            </ul>
+            <button class="refresh-button" onclick="refreshBoard()">REFRESH MESSAGE BOARD</button>
+        </div>
+
+        <!-- Secret Message Link Section -->
+      <!-- Message Section -->
+      <div class="message-link" id="messageLinkBox">
+        <h2>Secret Message</h2>
+        <p>Hi, Your link has been generated Successfully</p>
+        <p><i>Now share your link with your friends:</i></p>
+        <div class="copy-section">
+            <input type="text" id="messageLink" value="http://localhost:5500/frontend/message.html" readonly>
+            <button class="copy-button" onclick="copyLink()">Copy Link</button>
+        </div>
+    </div>    
+
+    <script>
+        // Login Function
+        async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+    
+            try {
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    alert(data.message);
+                    document.getElementById('loginBox').style.display = 'none';
+                    document.getElementById('messageBoard').style.display = 'block';
+                    document.getElementById('messageLinkBox').style.display = 'block';
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Сервертэй холбогдох үед алдаа гарлаа.");
+            }
+        }
+        function loadMessages() {
+            fetch('/get-messages')
+                .then(response => response.json())
+                .then(data => {
+                    const messageList = document.getElementById('messageList');
+                    messageList.innerHTML = ''; // Цэвэрлэх
+                    data.messages.forEach(message => {
+                        const li = document.createElement('li');
+                        li.textContent = message;
+                        messageList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Алдаа:', error));
+        }
+        // Refresh Message Board
+        // Refresh Message Board
+async function refreshBoard() {
+    try {
+        const response = await fetch('http://localhost:3000/get-messages');
+        const data = await response.json();
+
+        const messageList = document.getElementById('messageList');
+        messageList.innerHTML = '';  // Хуучин мессежийг цэвэрлэх
+
+        if (data.messages.length > 0) {
+            data.messages.forEach(message => {
+                const li = document.createElement('li');
+                li.textContent = message;
+                messageList.appendChild(li);
+            });
+        } else {
+            messageList.innerHTML = '<li>No feedbacks from your friends yet!</li>';
+        }
+    } catch (error) {
+        console.error('Error refreshing board:', error);
+        alert("Мессежийн самбар шинэчлэхэд алдаа гарлаа.");
+    }
+}
+
+
+
+    // Хуудас ачаалагдах үед самбарыг шинэчлэх
+    window.onload = refreshBoard;
+    
+        // Copy Link Function
+        function copyLink() {
+    const link = document.getElementById('messageLink');
+
+    // Using the modern Clipboard API to copy the link
+    navigator.clipboard.writeText(link.value).then(() => {
+        alert('Link copied: ' + link.value);
+    }).catch(error => {
+        console.error('Error copying link:', error);
+        alert('Link copying failed.');
+    });
+      }
+
+    // URL авах функц
+    async function fetchLink() {
+        try {
+            const response = await fetch('/get-link'); // Серверээс URL авах
+            const data = await response.json();
+            const messageLink = document.getElementById('messageLink'); // input талбар
+            messageLink.value = data.link; // URL-г input талбарт бичнэ
+        } catch (error) {
+            console.error('Error fetching the link:', error);
+        }
+    }
+
+    // Хуудас ачаалагдах үед URL-г авах
+    window.onload = fetchLink;
+
+    </script>
+</body>
+</html>
