@@ -18,4 +18,5 @@ COPY backend/ ./backend/
 COPY frontend/ ./frontend/
 
 # Серверийг эхлүүлэх
+WORKDIR /app/backend   # Серверийн код болон config-ийг ажиллуулах
 CMD ["node", "server.js"]
