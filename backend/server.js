@@ -4,14 +4,11 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+//const PORT = 3000;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-
-// Serve static files (Frontend files)
-app.use(express.static(path.join(__dirname, 'frontend')));
 
 // Fake user data for authentication
 const USERS = [{ username: 'admin', password: '123' }];
@@ -50,12 +47,17 @@ app.get('/get-messages', (req, res) => {
     res.json({ messages: MESSAGES });
 });
 
+// Статик файлуудыг (frontend файлууд) үйлчилгээ үзүүлэх
+app.use(express.static(path.join(__dirname, '../../frontend')));  // Замыг шинэчил
+
 // Default route to serve the index.html file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+    res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
 // Start the server
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`Сервер ажиллаж байна: http://localhost:${PORT}`);
 });
