@@ -39,8 +39,12 @@ jobs:
         run: |
           npm install -g @railway/cli
 
-      # 6. Railway руу deploy хийх
+      # 6. Railway руу login хийх
+      - name: Login to Railway
+        run: |
+          echo "${{ secrets.RAILWAY_TOKEN }}" | railway login --token
+
+      # 7. Railway руу deploy хийх
       - name: Deploy to Railway
         run: |
-          railway login --token ${{ secrets.RAILWAY_TOKEN }}
           railway up
