@@ -42,7 +42,7 @@ jobs:
       # 6. Railway руу login хийх
       - name: Login to Railway
         run: |
-          railway login --apiKey ${{ secrets.RAILWAY_TOKEN }}
+          echo "${{ secrets.RAILWAY_TOKEN }}" | railway login --token
 
       # 7. Railway руу deploy хийх
       - name: Deploy to Railway
