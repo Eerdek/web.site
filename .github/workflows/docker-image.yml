@@ -3,37 +3,37 @@ name: Build and Deploy Docker Image
 on:
   push:
     branches:
-      - main  # Энэ нь main branch дээр өөрчлөлт орвол workflow автоматаар ажиллана
+      - main 
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. GitHub репозиторыг clone хийх
+    
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # 2. Docker image үүсгэх
+    
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/rampage2247:latest .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/tetallisposible@gmail.com:latest .
 
-      # 3. Docker Hub руу image-ийг push хийх
+    
       - name: Push Docker image to Docker Hub
         env:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-          docker push ${{ secrets.DOCKER_USERNAME }}/rampage2247:latest  # Зассан хэсэг
+          docker push ${{ secrets.DOCKER_USERNAME }}/tetallisposible@gmail.com:latest 
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # Бусад үйлдэл дууссаных нь дараа deploy эхлэх
+    needs: build  
 
     steps:
-      # 4. Railway руу Docker контейнерийг deploy хийх
+    
       - name: Deploy to Railway
         uses: railwayapp/railway-action@v1
         with:
