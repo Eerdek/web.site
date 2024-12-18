@@ -42,12 +42,11 @@ jobs:
       - name: Railway CLI суулгах
         run: npm install -g @railway/cli
 
-      # Railway API түлхүүрийг код дотор оруулж, баталгаажуулах
-      - name: Railway CLI-г API түлхүүрээр баталгаажуулах
+      # Railway API түлхүүрийг хадгалах
+      - name: Railway API түлхүүрийг хадгалах
         run: |
-          mkdir -p ~/.railway  # Фолдерыг үүсгэх
-          echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey  # API түлхүүрийг хадгалах
-          railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}"  # API Key-ээр баталгаажуулах
+          mkdir -p ~/.railway  # Фолдер үүсгэх
+          echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey  # API Key хадгалах
 
       # Railway төсөлтэй холбоо барих
       - name: Railway төсөлтэй холбоо барих
