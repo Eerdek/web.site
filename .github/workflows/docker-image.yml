@@ -34,10 +34,10 @@ jobs:
     needs: build
 
     steps:
-      # 5. Railway CLI суулгах
+      # 5. Railway CLI суулгах (шинэ CLI)
       - name: Set up Railway CLI
         run: |
-          npm install -g railway
+          npm install -g @railway/cli
 
       # 6. Railway руу deploy хийх
       - name: Deploy to Railway
