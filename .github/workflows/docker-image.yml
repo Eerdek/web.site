@@ -34,8 +34,13 @@ jobs:
     needs: build
 
     steps:
-      # 5. Railway руу deploy хийх
-      - name: Deploy to Railway
-        uses: railwayapp/railway-action@v1
+      # 5. Railway CLI суулгах
+      - name: Set up Railway CLI
+        uses: MadeByThePinsHub/setup-railway-cli-action@v1
         with:
           railway_token: ${{ secrets.RAILWAY_TOKEN }}
+      
+      # 6. Railway руу deploy хийх
+      - name: Deploy to Railway
+        run: |
+          railway up
