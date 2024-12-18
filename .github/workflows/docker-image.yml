@@ -30,18 +30,22 @@ jobs:
     needs: build
 
     steps:
+      # 1. Install Railway CLI
       - name: Install Railway CLI
         run: |
           curl -sSL https://railway.app/install.sh | sh
 
+      # 2. Set Railway API key
       - name: Set Railway API key
         run: |
-          mkdir -p ~/.railway && echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey
+          echo "${{ secrets.RAILWAY_API_KEY }}" | railway login
 
+      # 3. Link to Railway project
       - name: Link to Railway project
         run: |
           railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
 
+      # 4. Deploy to Railway
       - name: Deploy to Railway
         run: |
           railway up --image admin673/rampage2247:latest
