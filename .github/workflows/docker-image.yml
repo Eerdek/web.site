@@ -17,7 +17,7 @@ jobs:
       # 2. Docker image үүсгэх
       - name: Build Docker image
         run: |
-          docker build -t tetallisposible/rampage2247:latest .
+          docker build -t admin673/rampage2247:latest .
 
       # 3. Docker Hub руу нэвтрэх
       - name: Login to Docker Hub
@@ -30,7 +30,7 @@ jobs:
       # 4. Docker Hub руу image push хийх
       - name: Push Docker image to Docker Hub
         run: |
-          docker push tetallisposible/rampage2247:latest
+          docker push admin673/rampage2247:latest
 
   deploy:
     runs-on: ubuntu-latest
