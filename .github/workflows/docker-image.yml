@@ -42,8 +42,7 @@ jobs:
       # 6. Railway API token ашиглан login хийх
       - name: Login to Railway using API token
         run: |
-          railway config:set RAILWAY_API_KEY=${{ secrets.RAILWAY_TOKEN }}
-          railway login --token $RAILWAY_API_KEY
+          railway login --token ${{ secrets.RAILWAY_TOKEN }}
 
       # 7. Railway руу deploy хийх
       - name: Deploy to Railway
