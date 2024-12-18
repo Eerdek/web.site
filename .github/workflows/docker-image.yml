@@ -54,4 +54,3 @@ jobs:
       - name: Deploy to Railway
         run: |
           railway up --image admin673/rampage2247:latest
-          
