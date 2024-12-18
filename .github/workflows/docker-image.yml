@@ -39,10 +39,11 @@ jobs:
         run: |
           curl -sSL https://railway.app/install.sh | sh
 
-      # 6. Railway руу login хийх
-      - name: Login to Railway
+      # 6. Railway API token ашиглан login хийх
+      - name: Login to Railway using API token
         run: |
-          echo "${{ secrets.RAILWAY_TOKEN }}" | railway login
+          railway config:set RAILWAY_API_KEY=${{ secrets.RAILWAY_TOKEN }}
+          railway login --token $RAILWAY_API_KEY
 
       # 7. Railway руу deploy хийх
       - name: Deploy to Railway
