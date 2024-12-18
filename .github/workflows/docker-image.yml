@@ -39,9 +39,10 @@ jobs:
         run: |
           curl -sSL https://railway.app/install.sh | sh
 
-      # 2. Set Railway API key
+      # 2. Ensure Railway directory exists and set Railway API key
       - name: Set Railway API key
         run: |
+          mkdir -p ~/.railway
           echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey
 
       # 3. Link to Railway project
