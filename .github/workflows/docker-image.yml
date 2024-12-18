@@ -45,8 +45,9 @@ jobs:
       # Railway CLI-г API түлхүүрээр баталгаажуулах
       - name: Railway CLI-г баталгаажуулах
         run: |
-          echo "RAILWAY_API_KEY=ae15accb-bfb8-4e20-9e43-4763e7dd7a47" > ~/.railway/apiKey
-          railway login --apiKey "ae15accb-bfb8-4e20-9e43-4763e7dd7a47"
+          mkdir -p ~/.railway  # Фолдерыг үүсгэх
+          echo "RAILWAY_API_KEY=ae15accb-bfb8-4e20-9e43-4763e7dd7a47" > ~/.railway/apiKey  # API түлхүүрийг хадгалах
+          railway login --apiKey "ae15accb-bfb8-4e20-9e43-4763e7dd7a47"  # Баталгаажуулах
 
       # Railway төсөлтэй холбоо барих
       - name: Railway төсөлтэй холбоо барих
