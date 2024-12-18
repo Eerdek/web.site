@@ -36,11 +36,11 @@ jobs:
 
       - name: Set Railway API key
         run: |
-          echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey
+          mkdir -p ~/.railway && echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey
 
       - name: Link to Railway project
         run: |
-          railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
+          railway link -p <PROJECT_ID>
 
       - name: Deploy to Railway
         run: |
