@@ -36,11 +36,11 @@ jobs:
     steps:
       # 5. Railway CLI суулгах
       - name: Set up Railway CLI
-        uses: MadeByThePinsHub/setup-railway-cli-action@v1
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
-      
+        run: |
+          npm install -g railway
+
       # 6. Railway руу deploy хийх
       - name: Deploy to Railway
         run: |
+          railway login --token ${{ secrets.RAILWAY_TOKEN }}
           railway up
