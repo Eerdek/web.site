@@ -36,11 +36,11 @@ jobs:
 
       - name: Login to Railway
         run: |
-          echo "${{ secrets.RAILWAY_API_KEY }}" | railway login --token
+          echo "${{ secrets.RAILWAY_API_KEY }}" | railway login
 
       - name: Link to Railway project
         run: |
-          railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
+         railway up --image admin673/rampage2247:latest
 
       - name: Deploy to Railway
         run: |
