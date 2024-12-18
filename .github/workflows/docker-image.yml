@@ -10,21 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. GitHub репозиторыг clone хийх
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # 2. Docker image үүсгэх
       - name: Build Docker image
         run: |
           docker build -t admin673/rampage2247:latest .
 
-      # 3. Docker Hub руу нэвтрэх
       - name: Login to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 4. Docker Hub руу image push хийх
       - name: Push Docker image to Docker Hub
         run: |
           docker push admin673/rampage2247:latest
@@ -34,17 +30,18 @@ jobs:
     needs: build
 
     steps:
-      # 5. Railway CLI суулгах
       - name: Install Railway CLI
         run: |
           curl -sSL https://railway.app/install.sh | sh
 
-      # 6. Railway API key тохируулах
       - name: Login to Railway
         run: |
-          railway login --apiKey ${{ secrets.RAILWAY_TOKEN }}
+          echo "${{ secrets.RAILWAY_API_KEY }}" | railway login --token
 
-      # 7. Railway руу deploy хийх
+      - name: Link to Railway project
+        run: |
+          railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
+
       - name: Deploy to Railway
         run: |
-          railway up
+          railway up --image admin673/rampage2247:latest
