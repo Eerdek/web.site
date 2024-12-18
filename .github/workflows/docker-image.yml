@@ -20,13 +20,16 @@ jobs:
           docker build -t tetallisposible/rampage2247:latest .
 
       # 3. Docker Hub руу image-ийг push хийх
-      - name: Push Docker image to Docker Hub
+      - name: Login to Docker Hub
         env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
-          docker push tetallisposible/rampage2247:latest  # Image нэрийг зөв болгосон
+          echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push tetallisposible/rampage2247:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -34,7 +37,4 @@ jobs:
 
     steps:
       # 4. Railway руу Docker контейнерийг deploy хийх
-      - name: Deploy to Railway
-        uses: railwayapp/railway-action@v1
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Deploy to Railwa
