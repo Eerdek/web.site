@@ -41,7 +41,7 @@ jobs:
       # 2. Install Railway CLI
       - name: Install Railway CLI
         run: |
-          curl -sSL https://github.com/railwayapp/cli/releases/latest/download/railway-linux-amd64 -o /usr/local/bin/railway
+          curl -sSL https://github.com/railwayapp/cli/releases/download/v0.1.0/railway-linux-amd64 -o /usr/local/bin/railway
           chmod +x /usr/local/bin/railway
 
       # 3. Verify Railway CLI Installation
