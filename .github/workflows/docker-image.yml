@@ -10,21 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Репозиторыг татаж авах (Checkout repository)
+      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # 2. Docker image үүсгэх (Build Docker image)
+      # 2. Build Docker image
       - name: Build Docker image
         run: |
           docker build -t admin673/rampage2247:latest .
 
-      # 3. Docker Hub руу нэвтрэх (Login to Docker Hub)
+      # 3. Login to Docker Hub
       - name: Login to Docker Hub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 4. Docker Hub руу image push хийх (Push Docker image to Docker Hub)
+      # 4. Push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
           docker push admin673/rampage2247:latest
@@ -34,27 +34,27 @@ jobs:
     needs: build
 
     steps:
-      # 1. Кодыг татаж авах (Checkout code)
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 2. Railway CLI суулгах (Install Railway CLI)
+      # 2. Install Railway CLI
       - name: Install Railway CLI
         run: |
-          curl -sSL https://github.com/railwayapp/cli/releases/download/v1.0.0/railway-linux-amd64 -o /usr/local/bin/railway
+          curl -sSL https://github.com/railwayapp/cli/releases/latest/download/railway-linux-amd64 -o /usr/local/bin/railway
           chmod +x /usr/local/bin/railway
 
-      # 3. Railway CLI-г баталгаажуулах (Login to Railway)
+      # 3. Railway login
       - name: Railway login
         run: |
           railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}"
 
-      # 4. Railway руу project-ийг холбоход (Link project)
+      # 4. Link project to Railway
       - name: Railway link project
         run: |
           railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
 
-      # 5. Railway руу deploy хийх (Deploy to Railway)
+      # 5. Deploy to Railway
       - name: Deploy to Railway
         run: |
           railway up
