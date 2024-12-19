@@ -1,4 +1,4 @@
-name: Build, Deploy Docker Image and Railway Deployment
+name: Build, Deploy Docker Image and Koyeb Deployment
 
 on:
   push:
@@ -10,52 +10,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Репозиторыг татаж авах (Checkout repository)
+      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # 2. Docker image үүсгэх (Build Docker image)
+      # 2. Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t admin673/rampage2247:latest .
+          docker build -t ghcr.io/<YOUR_GITHUB_USERNAME>/<YOUR_DOCKER_IMAGE_NAME>:latest .
 
-      # 3. Docker Hub руу нэвтрэх (Login to Docker Hub)
-      - name: Login to Docker Hub
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      # 3. Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u <YOUR_GITHUB_USERNAME> --password-stdin
 
-      # 4. Docker Hub руу image push хийх (Push Docker image to Docker Hub)
-      - name: Push Docker image to Docker Hub
+      # 4. Push Docker image to GitHub Container Registry
+      - name: Push Docker image to GitHub Container Registry
         run: |
-          docker push admin673/rampage2247:latest
+          docker push ghcr.io/<YOUR_GITHUB_USERNAME>/<YOUR_DOCKER_IMAGE_NAME>:latest
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
 
-     steps:
-      # Кодыг татаж авах
-      - name: Кодыг татаж авах
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      # Railway CLI суулгах
-      - name: Railway CLI суулгах
-        run: npm install -g @railway/cli
+      # 2. Install Koyeb CLI
+      - name: Install Koyeb CLI
+        run: npm install -g @koyeb/cli
 
-      # Railway API түлхүүрийг хадгалах
-      - name: Railway API түлхүүрийг хадгалах
-        run: |
-          mkdir -p ~/.railway  # Фолдер үүсгэх
-          echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey  # API Key хадгалах
+      # 3. Login to Koyeb
+      - name: Login to Koyeb
+        run: koyeb login --apiKey "${{ secrets.KOYEB_API_TOKEN }}"
 
-      # Railway руу нэвтрэх (Login to Railway)
-      - name: Railway руу нэвтрэх
-        run: railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}"
-
-      # Railway төсөлтэй холбоо барих
-      - name: Railway төсөлтэй холбоо барих
-        run: railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
-
-      # Railway руу түншлэх
-      - name: Railway руу түншлэх
-        run: railway up  # Deploy хийх
+      # 4. Deploy to Koyeb
+      - name: Deploy to Koyeb
+        run: koyeb deploy <YOUR_SERVICE_NAME> --image ghcr.io/<YOUR_GITHUB_USERNAME>/<YOUR_DOCKER_IMAGE_NAME>:latest
