@@ -41,9 +41,8 @@ jobs:
       # 2. Railway CLI суулгах (Install Railway CLI)
       - name: Install Railway CLI
         run: |
-          curl -sSL https://railway.app/cli -o railway-cli-linux.tar.gz
-          tar -xvzf railway-cli-linux.tar.gz
-          sudo mv railway /usr/local/bin/
+          curl -sSL https://github.com/railwayapp/cli/releases/download/v1.0.0/railway-linux-amd64 -o /usr/local/bin/railway
+          chmod +x /usr/local/bin/railway
 
       # 3. Railway CLI-г баталгаажуулах (Login to Railway)
       - name: Railway login
