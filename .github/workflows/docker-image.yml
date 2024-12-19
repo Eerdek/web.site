@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
-    steps:
+     steps:
       # Кодыг татаж авах
       - name: Кодыг татаж авах
         uses: actions/checkout@v2
@@ -47,7 +47,11 @@ jobs:
         run: |
           mkdir -p ~/.railway  # Фолдер үүсгэх
           echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey  # API Key хадгалах
-    
+
+      # Railway руу нэвтрэх (Login to Railway)
+      - name: Railway руу нэвтрэх
+        run: railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}"
+
       # Railway төсөлтэй холбоо барих
       - name: Railway төсөлтэй холбоо барих
         run: railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
