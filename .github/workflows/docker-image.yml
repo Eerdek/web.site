@@ -44,10 +44,10 @@ jobs:
 
       # Railway API түлхүүрийг хадгалах
       - name: Railway API түлхүүрийг хадгалах
-        run: |
-          mkdir -p ~/.railway  # Фолдер үүсгэх
-          echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey  # API Key хадгалах
-
+      run: |
+        mkdir -p ~/.railway  # Фолдер үүсгэх
+        echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey  # API Key хадгалах
+    
       # Railway төсөлтэй холбоо барих
       - name: Railway төсөлтэй холбоо барих
         run: railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
