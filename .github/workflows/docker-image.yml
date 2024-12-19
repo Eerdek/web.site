@@ -14,13 +14,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # 2. Docker image үүсгэх (Build and Push Docker image)
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          push: true
-          tags: admin673/rampage2247:latest
+      # 2. Docker image үүсгэх (Build Docker image)
+      - name: Build Docker image
+        run: |
+          docker build -t admin673/rampage2247:latest .
+
+      # 3. Docker Hub руу нэвтрэх (Login to Docker Hub)
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 4. Docker Hub руу image push хийх (Push Docker image to Docker Hub)
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push admin673/rampage2247:latest
 
   deploy:
     runs-on: ubuntu-latest
