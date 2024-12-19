@@ -44,10 +44,16 @@ jobs:
           curl -sSL https://github.com/railwayapp/cli/releases/latest/download/railway-linux-amd64 -o /usr/local/bin/railway
           chmod +x /usr/local/bin/railway
 
-      # 3. Check Railway CLI Installation
-      - name: Check Railway CLI Installation
+      # 3. Verify Railway CLI Installation
+      - name: Verify Railway CLI Installation
         run: |
-          which railway || echo "Railway CLI not installed"
+          if [ -f /usr/local/bin/railway ]; then
+            echo "Railway CLI downloaded successfully."
+            file /usr/local/bin/railway
+          else
+            echo "Railway CLI not found."
+            exit 1
+          fi
 
       # 4. Railway login
       - name: Railway login
