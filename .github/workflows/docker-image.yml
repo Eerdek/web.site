@@ -44,17 +44,22 @@ jobs:
           curl -sSL https://github.com/railwayapp/cli/releases/latest/download/railway-linux-amd64 -o /usr/local/bin/railway
           chmod +x /usr/local/bin/railway
 
-      # 3. Railway login
+      # 3. Check Railway CLI Installation
+      - name: Check Railway CLI Installation
+        run: |
+          which railway || echo "Railway CLI not installed"
+
+      # 4. Railway login
       - name: Railway login
         run: |
-          railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}"
+          /usr/local/bin/railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}"
 
-      # 4. Link project to Railway
+      # 5. Link project to Railway
       - name: Railway link project
         run: |
-          railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
+          /usr/local/bin/railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
 
-      # 5. Deploy to Railway
+      # 6. Deploy to Railway
       - name: Deploy to Railway
         run: |
-          railway up
+          /usr/local/bin/railway up
