@@ -34,19 +34,20 @@ jobs:
     needs: build
 
     steps:
-      # 1. Кодыг татаж авах
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 2. Koyeb CLI суулгах
+      # 2. Install Koyeb CLI
       - name: Install Koyeb CLI
-        run: npm install -g @koyeb/cli
+        run: |
+          curl -sSL https://github.com/koyeb/koyeb-cli/releases/latest/download/koyeb-linux-amd64 -o /usr/local/bin/koyeb
+          chmod +x /usr/local/bin/koyeb
 
-      # 3. Koyeb-д логин хийх
+      # 3. Login to Koyeb
       - name: Login to Koyeb
-        run: koyeb login --apiKey "${{ secrets.KOYEB_API_TOKEN }}" 
+        run: koyeb login --apiKey "${{ secrets.KOYEB_API_TOKEN }}"  # Koyeb API key-ийг ашиглан логин хийх
 
-      # 4. Koyeb руу Deploy хийх
+      # 4. Deploy to Koyeb
       - name: Deploy to Koyeb
-        run: koyeb deploy shutis-ngl --image ghcr.io/admin673/rampage2247:latest  
-      
+        run: koyeb deploy shutis-ngl --image ghcr.io/admin673/rampage2247:latest  # Koyeb руу image-ийг байрлуулах
