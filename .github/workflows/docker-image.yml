@@ -1,4 +1,4 @@
-name: Build, Deploy Docker Image and Koyeb Deployment
+name: Build, Deploy Docker Image and Railway Deployment
 
 on:
   push:
@@ -34,24 +34,24 @@ jobs:
     needs: build
 
     steps:
-      # 1. Кодыг татаж авах (Checkout code)
+      # 1. Кодыг татаж авах
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 2. Koyeb CLI суулгах (Install Koyeb CLI)
-      - name: Install Koyeb CLI
+      # 2. Railway CLI суулгах
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      # 3. Railway CLI-г баталгаажуулах
+      - name: Authenticate Railway CLI
         run: |
-          curl -sSL https://github.com/koyeb/koyeb-cli/releases/latest/download/koyeb-linux-amd64 -o /usr/local/bin/koyeb
-          chmod +x /usr/local/bin/koyeb
+          mkdir -p ~/.railway
+          echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey
 
-      # 3. Koyeb CLI-г шалгах (Verify Koyeb CLI installation)
-      - name: Verify Koyeb CLI installation
-        run: koyeb --version
+      # 4. Railway төсөлтэй холбоо барих
+      - name: Link to Railway project
+        run: railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
 
-      # 4. Koyeb руу нэвтрэх (Login to Koyeb)
-      - name: Login to Koyeb
-        run: koyeb login --apiKey "${{ secrets.KOYEB_API_TOKEN }}"  # Koyeb API key-ийг ашиглан логин хийх
-
-      # 5. Koyeb руу Deploy хийх (Deploy to Koyeb)
-      - name: Deploy to Koyeb
-        run: koyeb deploy shutis-ngl --image ghcr.io/admin673/rampage2247:latest  # Koyeb руу image-ийг байрлуулах
+      # 5. Railway руу түншлэх
+      - name: Deploy to Railway
+        run: railway up --image admin673/rampage2247:latest
