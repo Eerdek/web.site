@@ -34,24 +34,28 @@ jobs:
     needs: build
 
     steps:
-      # 1. Кодыг татаж авах
+      # 1. Кодыг татаж авах (Checkout code)
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # 2. Railway CLI суулгах
+      # 2. Railway CLI суулгах (Install Railway CLI)
       - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      # 3. Railway CLI-г баталгаажуулах
-      - name: Authenticate Railway CLI
         run: |
-          mkdir -p ~/.railway
-          echo "${{ secrets.RAILWAY_API_KEY }}" > ~/.railway/apiKey
+          curl -sSL https://railway.app/cli -o railway-cli-linux.tar.gz
+          tar -xvzf railway-cli-linux.tar.gz
+          sudo mv railway /usr/local/bin/
 
-      # 4. Railway төсөлтэй холбоо барих
-      - name: Link to Railway project
-        run: railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
+      # 3. Railway CLI-г баталгаажуулах (Login to Railway)
+      - name: Railway login
+        run: |
+          railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}"
 
-      # 5. Railway руу түншлэх
+      # 4. Railway руу project-ийг холбоход (Link project)
+      - name: Railway link project
+        run: |
+          railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3
+
+      # 5. Railway руу deploy хийх (Deploy to Railway)
       - name: Deploy to Railway
-        run: railway up --image admin673/rampage2247:latest
+        run: |
+          railway up
