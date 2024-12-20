@@ -40,12 +40,12 @@ jobs:
     - name: Push Docker image to Docker Hub (or Render registry)
       run: |
         docker tag your-app-name your-dockerhub-username/your-app-name:latest
-        docker push your-dockerhub-username/your-app-name:latest
+        docker push admin673/your-app-name:latest
 
     # 4. Render рүү deploy хийх (Render API ашиглах)
     - name: Deploy to Render
       run: |
         curl -X POST \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-          -d '{"service": "your-service-id", "docker_image": "your-dockerhub-username/your-app-name:latest"}' \
+          -d '{"service": "srv-ctis15ogph6c738c746g", "docker_image": "admin673/your-app-name:latest"}' \
           https://api.render.com/v1/services/deploy
