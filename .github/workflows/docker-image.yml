@@ -1,4 +1,4 @@
-name: Build, Push Docker Image, and Deploy to Railway
+name: Build, Push Docker Image, and Deploy to Render
 
 on:
   push:
@@ -32,35 +32,17 @@ jobs:
         run: |
           docker push admin673/rampage2247:latest
 
-  deploy-to-railway:
+  deploy-to-render:
     runs-on: ubuntu-latest
     needs: build-and-push
 
     steps:
-      # 1. Checkout repository
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      # 2. Install Railway CLI
-      - name: Install Railway CLI
-        run: |
-          curl -sSL https://github.com/railwayapp/cli/releases/download/v0.1.0/railway-linux-amd64 -o /usr/local/bin/railway
-          chmod +x /usr/local/bin/railway
-          file /usr/local/bin/railway || { echo "Invalid Railway binary."; exit 1; }
-
-      # 3. Railway Login
-      - name: Railway Login
+      # 1. Deploy Docker Image to Render
+      - name: Deploy to Render
         env:
-          RAILWAY_API_KEY: ${{ secrets.RAILWAY_API_KEY }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
         run: |
-          /usr/local/bin/railway login --apiKey "${{ secrets.RAILWAY_API_KEY }}" || { echo "Railway login failed."; exit 1; }
-
-      # 4. Link Project to Railway
-      - name: Link Project to Railway
-        run: |
-          /usr/local/bin/railway link -p 0ff3de39-7a77-40b8-9365-4ff1ce9c2ce3 || { echo "Linking project failed."; exit 1; }
-
-      # 5. Deploy to Railway
-      - name: Deploy to Railway
-        run: |
-          /usr/local/bin/railway up || { echo "Deployment to Railway failed."; exit 1; }
+          curl -X POST "https://api.render.com/v1/services/srv-ctis15ogph6c738c746g/deploys" \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"clearCache":true}'
