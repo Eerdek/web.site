@@ -1,0 +1,49 @@
+name: Build, Push Docker Image, and Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      # 2. Build Docker image
+      - name: Build Docker Image
+        run: |
+          docker build -t admin673/rampage2247:latest .
+
+      # 3. Login to Docker Hub
+      - name: Login to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login --username "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # 4. Push Docker image to Docker Hub
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker push admin673/rampage2247:latest
+
+  deploy-to-render:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      # 1. Deploy Docker Image to Render
+      - name: Deploy to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X POST "https://api.render.com/v1/services/srv-ctis15ogph6c738c746g
+/deploys" \
+          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+          -H "Content-Type: application/json" \
+          -d '{"clearCache":true}'
