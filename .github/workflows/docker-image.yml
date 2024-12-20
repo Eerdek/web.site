@@ -28,7 +28,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t your-app-name .
+        docker build -t shutis-ngl .
 
     # 3. Render руу Docker контейнерээ push хийх
     - name: Log in to Docker Hub (or use Render registry)
@@ -39,13 +39,13 @@ jobs:
 
     - name: Push Docker image to Docker Hub (or Render registry)
       run: |
-        docker tag your-app-name your-dockerhub-username/your-app-name:latest
-        docker push admin673/your-app-name:latest
+        docker tag shutis-ngl admin673/shutis-ngl:latest
+        docker push admin673/shutis-ngl:latest
 
     # 4. Render рүү deploy хийх (Render API ашиглах)
     - name: Deploy to Render
       run: |
         curl -X POST \
           -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-          -d '{"service": "srv-ctis15ogph6c738c746g", "docker_image": "admin673/your-app-name:latest"}' \
+          -d '{"service": "srv-ctis15ogph6c738c746g", "docker_image": "admin673/shutis-ngl:latest"}' \
           https://api.render.com/v1/services/deploy
