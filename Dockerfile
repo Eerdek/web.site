@@ -17,14 +17,9 @@ COPY backend/ ./backend/
 # Frontend-ийн файлуудыг хуулж авах
 COPY frontend/ /app/frontend/
 
-# Frontend-ийн build хийх, хэрэв хэрэгтэй бол
-WORKDIR /app/frontend
-RUN npm install
-RUN npm run build
-
-# Аппликэйшний портоо 3000 гэж тохируулах
+# Аппликэйшний портоо 10000 гэж тохируулах
 EXPOSE 10000
 
 # Backend серверийг эхлүүлэх
 WORKDIR /app/backend
-CMD ["node", "server.js"]
+CMD ["node", "./backend/server.js"]
