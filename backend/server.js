@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
-//const PORT = 3000;
+//const PORT = 10000;
 
 // Middleware
 app.use(cors());
@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
     console.log(`Сервер ажиллаж байна: http://localhost:${PORT}`);
