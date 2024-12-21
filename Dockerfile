@@ -14,12 +14,12 @@ RUN npm install
 # Backend-ийн файлуудыг хуулж авах
 COPY backend/ ./backend/
 
-# Frontend-ийн файлуудыг хуулж авах
+# Frontend-ийн файлуудыг хуулж авах (Хэрэв frontend байгаа бол)
 COPY frontend/ /app/frontend/
 
-# Аппликэйшний портоо 10000 гэж тохируулах
+# Render автоматаар PORT хувьсагчийг ашигладаг тул 10000 гэж хатуу тохируулах шаардлагагүй
 EXPOSE 10000
 
 # Backend серверийг эхлүүлэх
-WORKDIR /app/backend
-CMD ["node", "./backend/server.js"]
+# Render-ийн PORT орчны хувьсагчийг ашиглаж ажиллана
+CMD ["npm", "start"]
