@@ -56,10 +56,9 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 10000; // Render дээрх PORT, эсвэл локал орчинд 10000 порт ашиглах
-
+const port = process.env.PORT || 10000;
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Сервер ажиллаж байна: http://localhost:${port}`);
 });
 
 
