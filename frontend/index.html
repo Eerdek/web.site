@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Нэвтрэх & Мессеж Илгээх</title>
     <style>
+        /* Загварын хэсэг */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -78,7 +79,7 @@
             margin: 5px 0;
             padding: 10px;
             border-radius: 5px;
-            word-wrap: break-word; /* Шинэ мөрөнд шилжүүлэх */
+            word-wrap: break-word;
         }
 
         .refresh-button, .copy-button {
@@ -133,29 +134,27 @@
 
         <!-- Message Board Section -->
         <div class="message-board" id="messageBoard" style="display: none;">
-            <h2>Message Board</h2>
+            <h2>Мессежийн Самбар</h2>
             <ul id="messageList">
-                <li>No feedbacks from your friends yet!</li>
+                <li>Танд одоогоор мессеж ирээгүй байна!</li>
             </ul>
-            <button class="refresh-button" onclick="refreshBoard()">REFRESH MESSAGE BOARD</button>
+            <button class="refresh-button" onclick="refreshBoard()">Мессеж Шинэчлэх</button>
         </div>
 
         <!-- Secret Message Link Section -->
         <div class="message-link" id="messageLinkBox" style="display: none;">
-            <h2>Secret Message</h2>
-            <p>Hi, Your link has been generated successfully!</p>
+            <h2>Нууц Мессеж Линк</h2>
+            <p>Таны линк амжилттай үүсгэгдлээ!</p>
             <div class="copy-section">
-                <input type="text" id="messageLink" value="http://localhost:5500/frontend/message.html" readonly>
-                <button class="copy-button" onclick="copyLink()">Copy Link</button>
+                <input type="text" id="messageLink" value="https://web-site-709b.onrender.com/message.html" readonly>
+                <button class="copy-button" onclick="copyLink()">Линкийг Хуулах</button>
             </div>
         </div>
     </div>
 
     <script>
-       const API_BASE_URL = 'https://web-site-709b.onrender.com'; // Render дээрх серверийн URL
-       // const API_BASE_URL = 'http://localhost:10000'; // Backend API-н үндсэн холбоос
+        const API_BASE_URL = 'https://web-site-709b.onrender.com';
 
-        // Login Function
         async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -184,14 +183,13 @@
             }
         }
 
-        // Refresh Message Board
         async function refreshBoard() {
             try {
                 const response = await fetch(`${API_BASE_URL}/get-messages`);
                 const data = await response.json();
 
                 const messageList = document.getElementById('messageList');
-                messageList.innerHTML = '';  // Хуучин мессежийг цэвэрлэх
+                messageList.innerHTML = '';
 
                 if (data.messages.length > 0) {
                     data.messages.forEach(message => {
@@ -200,7 +198,7 @@
                         messageList.appendChild(li);
                     });
                 } else {
-                    messageList.innerHTML = '<li>No feedbacks from your friends yet!</li>';
+                    messageList.innerHTML = '<li>Танд одоогоор мессеж ирээгүй байна!</li>';
                 }
             } catch (error) {
                 console.error('Error refreshing board:', error);
@@ -208,18 +206,16 @@
             }
         }
 
-        // Copy Link Function
         function copyLink() {
             const link = document.getElementById('messageLink');
             navigator.clipboard.writeText(link.value).then(() => {
-                alert('Link copied: ' + link.value);
+                alert('Линк хуулагдлаа: ' + link.value);
             }).catch(error => {
                 console.error('Error copying link:', error);
-                alert('Link copying failed.');
+                alert('Линк хуулахад алдаа гарлаа.');
             });
         }
 
-        // Хуудас ачаалагдах үед
         window.onload = () => {
             refreshBoard();
         };
