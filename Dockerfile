@@ -4,22 +4,21 @@ FROM node:16
 # Аппликэйшн ажиллах газар (working directory) тодорхойлох
 WORKDIR /app
 
-# Backend-ийн package.json файлуудыг хуулж авах
+# Backend-ийн package.json болон package-lock.json файлуудыг хуулж авах
 COPY backend/package*.json ./backend/
 
 # Backend-ийн dependencies-ийг суулгах
 WORKDIR /app/backend
 RUN npm install
 
-# Backend-ийн файлуудыг хуулж авах
+# Backend-ийн бүх файлуудыг хуулж авах
 COPY backend/ ./backend/
 
-# Frontend-ийн файлуудыг хуулж авах (Хэрэв frontend байгаа бол)
+# Frontend-ийн файлуудыг хуулж авах
 COPY frontend/ /app/frontend/
 
-# Render автоматаар PORT хувьсагчийг ашигладаг тул 10000 гэж хатуу тохируулах шаардлагагүй
+# Порт тохиргоог Render-ийн автоматаар тохируулж ажиллах
 EXPOSE 10000
 
-# Backend серверийг эхлүүлэх
-# Render-ийн PORT орчны хувьсагчийг ашиглаж ажиллана
-CMD ["npm", "start"]
+# Render орчны PORT хувьсагчийг ашиглан сервер эхлүүлэх
+CMD ["node", "./backend/server.js"]
