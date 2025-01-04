@@ -29,15 +29,15 @@ app.post('/api/login', (req, res) => {
 
 // Send message API
 app.post('/send-message', (req, res) => {
-  const { message } = req.body;
+    const { message } = req.body;
 
-  if (message && message.trim() !== '') {
-      MESSAGES.push(message);  // Мессежийг массивд нэмэх
-      console.log('Мессеж хүлээн авлаа:', message);  // Лог нэмэх
-      return res.status(200).json({ success: true, message: 'Мессеж амжилттай хүлээн авлаа!' });
-  } else {
-      return res.status(400).json({ success: false, message: 'Мессеж хоосон байна!' });
-  }
+    if (message && message.trim() !== '') {
+        MESSAGES.push(message); // Мессежийг массивд нэмэх
+        console.log('Мессеж хүлээн авлаа:', message);
+        return res.status(200).json({ success: true, message: 'Мессеж амжилттай хүлээн авлаа!' });
+    } else {
+        return res.status(400).json({ success: false, message: 'Мессеж хоосон байна!' });
+    }
 });
 
 // Get Messages API
