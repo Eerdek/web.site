@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
-//const PORT = 10000;
 
 // Middleware
 app.use(cors());
@@ -41,18 +40,17 @@ app.post('/send-message', (req, res) => {
   }
 });
 
-
 // Get Messages API
 app.get('/get-messages', (req, res) => {
     res.json({ messages: MESSAGES });
 });
 
 // Статик файлуудыг (frontend файлууд) үйлчилгээ үзүүлэх
-app.use(express.static(path.join(__dirname, '../../frontend'))); // Энд засвар хийх шаардлагатай
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 // Default route to serve the index.html file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend', 'index.html')); // Замыг тохируулах
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 // Start the server
@@ -60,5 +58,3 @@ const port = process.env.PORT || 10000;
 app.listen(port, () => {
   console.log(`Сервер ажиллаж байна: http://localhost:${port}`);
 });
-
-

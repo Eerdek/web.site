@@ -1,4 +1,4 @@
-name: Deploy to Render
+name: Deploy to Docker
 
 on:
   push:
@@ -30,22 +30,14 @@ jobs:
       run: |
         docker build -t shutis-ngl .
 
-    # 3. Render руу Docker контейнерээ push хийх
-    - name: Log in to Docker Hub (or use Render registry)
+    # 3. Docker Hub руу Docker контейнерээ push хийх
+    - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}   # Docker Hub-ийн username
         password: ${{ secrets.DOCKER_PASSWORD }}   # Docker Hub-ийн password
 
-    - name: Push Docker image to Docker Hub (or Render registry)
+    - name: Push Docker image to Docker Hub
       run: |
         docker tag shutis-ngl admin673/shutis-ngl:latest
         docker push admin673/shutis-ngl:latest
-
-    # 4. Render рүү deploy хийх (Render API ашиглах)
-    - name: Deploy to Render
-      run: |
-        curl -X POST \
-          -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-          -d '{"service": "srv-ctis15ogph6c738c746g", "docker_image": "admin673/shutis-ngl:latest"}' \
-          https://api.render.com/v1/services/deploy

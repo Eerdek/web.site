@@ -146,28 +146,28 @@
             <h2>Нууц Мессеж Линк</h2>
             <p>Таны линк амжилттай үүсгэгдлээ!</p>
             <div class="copy-section">
-                <input type="text" id="messageLink" value="https://web-site-709b.onrender.com/message.html" readonly>
+                <input type="text" id="messageLink" value="https://shutisngl.fly.dev/send-message" readonly>
                 <button class="copy-button" onclick="copyLink()">Линкийг Хуулах</button>
             </div>
         </div>
     </div>
 
     <script>
-        const API_BASE_URL = 'https://web-site-709b.onrender.com';
-
+        const API_BASE_URL = 'https://shutisngl.fly.dev';  // Fly.io URL
+    
         async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
+    
             try {
                 const response = await fetch(`${API_BASE_URL}/api/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
                 });
-
+    
                 const data = await response.json();
-
+    
                 if (response.ok) {
                     alert(data.message);
                     document.getElementById('loginBox').style.display = 'none';
@@ -182,15 +182,15 @@
                 alert("Сервертэй холбогдох үед алдаа гарлаа.");
             }
         }
-
+    
         async function refreshBoard() {
             try {
                 const response = await fetch(`${API_BASE_URL}/get-messages`);
                 const data = await response.json();
-
+    
                 const messageList = document.getElementById('messageList');
                 messageList.innerHTML = '';
-
+    
                 if (data.messages.length > 0) {
                     data.messages.forEach(message => {
                         const li = document.createElement('li');
@@ -205,7 +205,7 @@
                 alert("Мессежийн самбар шинэчлэхэд алдаа гарлаа.");
             }
         }
-
+    
         function copyLink() {
             const link = document.getElementById('messageLink');
             navigator.clipboard.writeText(link.value).then(() => {
@@ -215,10 +215,10 @@
                 alert('Линк хуулахад алдаа гарлаа.');
             });
         }
-
+    
         window.onload = () => {
             refreshBoard();
         };
-    </script>
+    </script>    
 </body>
 </html>
