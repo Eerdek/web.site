@@ -101,6 +101,12 @@
             }).then(() => {
                 alert('Мессеж амжилттай илгээгдлээ!');
                 messageBox.value = ''; // Текст талбарыг цэвэрлэх
+
+                // Retrieve the message board element from index.html
+                if (window.opener) {
+                    window.opener.refreshBoard();
+                    window.close(); // Close the current message page after submission
+                }
             }).catch(error => {
                 console.error('Error:', error);
                 alert('Мессеж илгээхэд алдаа гарлаа.');

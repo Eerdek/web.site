@@ -210,15 +210,23 @@
             const link = document.getElementById('messageLink');
             navigator.clipboard.writeText(link.value).then(() => {
                 alert('Линк хуулагдлаа: ' + link.value);
+                // Store the copied link in LocalStorage
+                localStorage.setItem('messageLink', link.value);
             }).catch(error => {
                 console.error('Error copying link:', error);
                 alert('Линк хуулахад алдаа гарлаа.');
             });
         }
-    
+
         window.onload = () => {
+            // Retrieve the message link from LocalStorage if available
+            const messageLink = localStorage.getItem('messageLink');
+            if (messageLink) {
+                console.log('Message link retrieved:', messageLink);
+            }
+
             refreshBoard();
         };
-    </script>    
+    </script>
 </body>
 </html>
