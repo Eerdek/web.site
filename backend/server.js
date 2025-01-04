@@ -46,11 +46,11 @@ app.get('/get-messages', (req, res) => {
 });
 
 // Статик файлуудыг (frontend файлууд) үйлчилгээ үзүүлэх
-app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.static(path.join(__dirname, '../../frontend'))); // Энд засвар хийх шаардлагатай
 
 // Default route to serve the index.html file
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../frontend', 'index.html')); // Замыг тохируулах
 });
 
 // Start the server
