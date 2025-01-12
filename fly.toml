@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for shutisngl on 2025-01-06T15:31:00Z
+# fly.toml app configuration file generated for shutissecrets on 2025-01-12T10:27:29Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'shutisngl'
-primary_region = 'nrt'
+app = 'shutissecrets'
+primary_region = 'hkg'
 
 [build]
 
